@@ -31,7 +31,7 @@ public class SupplierRestController {
 		dto.setId(supplier.getId());
 		dto.setName(supplier.getName());
 		dto.setPassword(supplier.getPassword());
-		SupplierDto response = toDto(supplier);
+		//SupplierDto response = toDto(supplier);
 		return dto;
 	}
 	

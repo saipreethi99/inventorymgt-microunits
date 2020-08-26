@@ -45,8 +45,9 @@ public class ComputerController {
         int supplierId = requestData.getSupplierId();
         int diskSize=requestData.getDiskSize();
         Computer computer = new Computer(name, supplierId, diskSize);
+        computerservice.add(computer);
         SupplierDto supplier = fetchFromSupplierAppById(supplierId);
-        ComputerDto response = computerUtil.computerDto(computer, supplierId, computer.getName());
+        ComputerDto response = computerUtil.computerDto(computer, supplier.getId(), computer.getName());
         return response;
     }
 
@@ -55,7 +56,7 @@ public class ComputerController {
     	Computer computer = computerservice.findComputerById(id);
         int supplierId = computer.getSupplierId();
         SupplierDto supplier = fetchFromSupplierAppById(supplierId);
-		ComputerDto response = computerUtil.computerDto(computer, supplierId, supplier.getName());
+		ComputerDto response = computerUtil.computerDto(computer, supplier.getId(), supplier.getName());
 		return response;
     }
 
@@ -66,7 +67,7 @@ public class ComputerController {
         for (Computer computer:list){
             int  supplierId=computer.getSupplierId();
             SupplierDto supplier= fetchFromSupplierAppById(supplierId);
-            ComputerDto dto=computerUtil.computerDto(computer,supplierId,supplier.getName());
+            ComputerDto dto=computerUtil.computerDto(computer,supplier.getId(),supplier.getName());
             response.add(dto);
         }
         return response;
@@ -78,22 +79,15 @@ public class ComputerController {
     	List<ComputerDto> response=new ArrayList<>();
     	SupplierDto supplier= fetchFromSupplierAppById(supplierId);
     	for (Computer computer : list) {
-			ComputerDto computerDto = computerUtil.computerDto(computer, supplierId, supplier.getName());
+			ComputerDto computerDto = computerUtil.computerDto(computer, supplier.getId(), supplier.getName());
 			response.add(computerDto);
 		}
 		return response;
     }
 
     public SupplierDto fetchFromSupplierAppById(int supplierId) {
-        String url = "http://localhost:8586/suppliers/get/" + supplierId;
+        String url = "http://localhost:8588/suppliers/get/" + supplierId;
         SupplierDto dto = restTemplate.getForObject(url, SupplierDto.class);
         return dto;
     }
 }
-
-/*
-@GetMapping("/authenticate/{id}/{password}")
-public boolean authenticate(@PathVariable("id") int id, @PathVariable("password") String password) {
-    boolean result =computerservice.authenticate(id, password);
-    return result;
-}*/
